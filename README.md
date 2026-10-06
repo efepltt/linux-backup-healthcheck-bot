@@ -93,30 +93,3 @@ Bot çalıştığında Discord/Telegram kanalınıza şu şekilde bir mesaj dü�
 > ⚙️ **Servis Durumları:**
 > - **Nginx:** `active`
 > - **MySQL/MariaDB:** `active`
-
-*(Repo'yu GitHub'a yüklediğinizde buraya uygulamanın ekran görüntüsünü ekleyebilirsiniz.)*
-
----
-
-## CV / Özgeçmiş Metni (Öneri) 📄
-
-Özgeçmişinizde bu projeden bahsederken aşağıdaki cümleyi kullanabilirsiniz:
-
-> **"Geliştirilen Bash betiği ve cron yapılandırması ile web ve veritabanı yedekleme süreçleri otomatikleştirildi; Telegram/Discord bot entegrasyonuyla sunucu sağlık metrikleri canlı bildirim hattına bağlandı."**
-
-## Mülakat Soru & Cevapları 🎤
-
-Bu proje özelinde gireceğiniz mülakatlarda gelebilecek olası sorular ve cevapları:
-
-**Soru 1:** "Cron job çalışmadığında hatayı nasıl debug edersin (çözersin)?"
-**Cevap:**
-1. Öncelikle `/var/log/syslog` (Debian/Ubuntu) veya `/var/log/cron` (RHEL/CentOS) loglarına `grep CRON` komutu ile bakarak cron'un gerçekten tetiklenip tetiklenmediğini kontrol ederim.
-2. Betiğin çalıştırılabilir izni (`chmod +x`) olup olmadığını kontrol ederim.
-3. Cron'un çalıştırdığı çevre (environment), kullanıcının standart PATH değerlerini taşımaz. Bu yüzden betik içindeki komutların (`mysqldump`, `zip`, `gpg` vb.) veya cron tanımlamasındaki betiğin **tam dosya yolunu (absolute path)** doğru yazdığımdan emin olurum.
-4. Crontab'a eklediğim satırın sonuna `>> /var/log/cron_hata.log 2>&1` ekleyerek `stdout` (çıktı) ve `stderr` (hata) loglarını spesifik bir dosyaya yazdırıp detaylı hatayı incelerim.
-
-**Soru 2:** "Betiğin yetkisiz kullanıcılar tarafından değiştirilmesini nasıl engellersin?"
-**Cevap:**
-1. Güvenlik için dosyanın sahipliğini (owner) `root` kullanıcısına veririm: `chown root:root betik.sh`.
-2. Dosya okuma, yazma ve çalıştırma izinlerini sadece root'a (veya yetkili kullanıcıya) kısıtlarım: `chmod 700 betik.sh`.
-3. Eğer dosyanın çok kritik olduğunu düşünüyor ve root dahi olsa kazara silinmesini veya değiştirilmesini önlemek istiyorsam, Linux dosya sistemi özelliklerinden faydalanarak **immutable (değiştirilemez)** bayrağını eklerim: `chattr +i betik.sh`. Değişiklik yapmak istediğimde önce `chattr -i` ile kaldırıp sonra düzenlemem gerekir.
