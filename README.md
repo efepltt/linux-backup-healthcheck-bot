@@ -21,7 +21,7 @@ Bu proje, Linux sunucunuzdaki kritik web dizinlerini ve MySQL veritabanını oto
 
 2. **Repoyu Klonlayın:**
    ```bash
-   git clone https://github.com/kullaniciadi/linux-backup-healthcheck-bot.git
+   git clone https://github.com/efepltt/linux-backup-healthcheck-bot.git
    cd linux-backup-healthcheck-bot
    ```
 
