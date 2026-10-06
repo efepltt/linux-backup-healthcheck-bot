@@ -14,7 +14,7 @@ DB_PASS="sifre123"               # MySQL şifresi
 DB_NAME="veritabani_adi"         # Yedeklenecek veritabanı adı
 GPG_PASSPHRASE="cok_guvenli_sifre" # GPG şifreleme parolası
 WEBHOOK_URL="https://api.telegram.org/bot8282285130:AAHhj5Z1osJ4I1yV0Eu04Z_QqnHqftsO3Yw/sendMessage" # Telegram için
-TELEGRAM_CHAT_ID="7082533439" # Kullanıcının Chat ID'si
+TELEGRAM_CHAT_ID="" # Kullanıcının Chat ID'si
 DISCORD_WEBHOOK=false            # True ise Discord, False ise Telegram formatında gönderir
 
 # ------------------------------------------------------------------------------
