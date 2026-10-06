@@ -93,5 +93,3 @@ Bot çalıştığında Discord/Telegram kanalınıza şu şekilde bir mesaj dü�
 > ⚙️ **Servis Durumları:**
 > - **Nginx:** `active`
 > - **MySQL/MariaDB:** `active`
-
-*(Repo'yu GitHub'a yüklediğinizde buraya uygulamanın ekran görüntüsünü ekleyebilirsiniz.)*
