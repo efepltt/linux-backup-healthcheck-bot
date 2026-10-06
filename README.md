@@ -5,7 +5,7 @@ Bu proje, Linux sunucunuzdaki kritik web dizinlerini ve MySQL veritabanını oto
 ## Özellikler ✨
 - **Otomatik Veritabanı Yedeği:** `mysqldump` ile MySQL/MariaDB yedeği alınır.
 - **Dosya Yedeği:** Belirtilen web dizininin tam yedeği alınır.
-- **Güvenli Arşivleme:** Dosyalar `zip` formatında sıkıştırılır ve `GPG` (AES-256) kullanılarak şifrelenir.
+- **Güvenli Arşivleme:** Dosyalar `tar.gz` formatında sıkıştırılır ve `GPG` (AES-256) kullanılarak şifrelenir.
 - **Sunucu Sağlık Kontrolü:** Disk doluluk oranı, RAM kullanımı, Nginx ve MySQL servis durumları anlık olarak raporlanır.
 - **Canlı Bildirim (Webhook):** İşlem sonrasında Discord veya Telegram kanalınıza özet rapor olarak gönderilir.
 - **Otomasyon (Cron):** `cron` entegrasyonu sayesinde her gece belirlediğiniz bir saatte el değmeden çalışır.
@@ -13,15 +13,15 @@ Bu proje, Linux sunucunuzdaki kritik web dizinlerini ve MySQL veritabanını oto
 ## Kurulum 🛠️
 
 1. **Gereksinimleri Yükleyin:**
-   Sunucunuzda `zip`, `mysql-client`, `gnupg` ve `curl` paketlerinin yüklü olduğundan emin olun. (Ubuntu/Debian tabanlı sistemler için:)
+   Sunucunuzda `tar`, `mysql-client`, `gnupg` ve `curl` paketlerinin yüklü olduğundan emin olun. (Ubuntu/Debian tabanlı sistemler için:)
    ```bash
    sudo apt update
-   sudo apt install zip mysql-client gnupg curl -y
+   sudo apt install tar mysql-client gnupg curl -y
    ```
 
 2. **Repoyu Klonlayın:**
    ```bash
-   git clone https://github.com/kullaniciadi/linux-backup-healthcheck-bot.git
+   git clone https://github.com/efepltt/linux-backup-healthcheck-bot.git
    cd linux-backup-healthcheck-bot
    ```
 
@@ -67,11 +67,11 @@ Betiği her gece saat 03:00'te otomatik çalışacak şekilde crontab'a ekleyebi
 
 Şifrelenmiş `.gpg` uzantılı yedeği açmak için aşağıdaki komutu kullanın (şifre sorulacaktır):
 ```bash
-gpg -d backup_2023-10-06_03-00-00.zip.gpg > backup.zip
+gpg -d backup_2023-10-06_03-00-00.tar.gz.gpg > backup.tar.gz
 ```
-Şifreyi çözdükten sonra standart bir zip arşivi olarak klasöre çıkartabilirsiniz:
+Şifreyi çözdükten sonra standart bir tar arşivi olarak klasöre çıkartabilirsiniz:
 ```bash
-unzip backup.zip
+tar -xzf backup.tar.gz
 ```
 
 ## Örnek Bildirim Ekran Görüntüsü 📱
@@ -82,7 +82,7 @@ Bot çalıştığında Discord/Telegram kanalınıza şu şekilde bir mesaj dü�
 > 🗓️ **Tarih:** 2026-10-06 03:00:01
 > 
 > 💾 **Yedek Durumu:**
-> - **Dosya:** `backup_2026-10-06_03-00-00.zip.gpg`
+> - **Dosya:** `backup_2026-10-06_03-00-00.tar.gz.gpg`
 > - **Konum:** `/var/backups/server`
 > - **Durum:** Başarılı 🔒 (GPG Şifreli)
 > 
@@ -93,30 +93,3 @@ Bot çalıştığında Discord/Telegram kanalınıza şu şekilde bir mesaj dü�
 > ⚙️ **Servis Durumları:**
 > - **Nginx:** `active`
 > - **MySQL/MariaDB:** `active`
-
-*(Repo'yu GitHub'a yüklediğinizde buraya uygulamanın ekran görüntüsünü ekleyebilirsiniz.)*
-
----
-
-## CV / Özgeçmiş Metni (Öneri) 📄
-
-Özgeçmişinizde bu projeden bahsederken aşağıdaki cümleyi kullanabilirsiniz:
-
-> **"Geliştirilen Bash betiği ve cron yapılandırması ile web ve veritabanı yedekleme süreçleri otomatikleştirildi; Telegram/Discord bot entegrasyonuyla sunucu sağlık metrikleri canlı bildirim hattına bağlandı."**
-
-## Mülakat Soru & Cevapları 🎤
-
-Bu proje özelinde gireceğiniz mülakatlarda gelebilecek olası sorular ve cevapları:
-
-**Soru 1:** "Cron job çalışmadığında hatayı nasıl debug edersin (çözersin)?"
-**Cevap:**
-1. Öncelikle `/var/log/syslog` (Debian/Ubuntu) veya `/var/log/cron` (RHEL/CentOS) loglarına `grep CRON` komutu ile bakarak cron'un gerçekten tetiklenip tetiklenmediğini kontrol ederim.
-2. Betiğin çalıştırılabilir izni (`chmod +x`) olup olmadığını kontrol ederim.
-3. Cron'un çalıştırdığı çevre (environment), kullanıcının standart PATH değerlerini taşımaz. Bu yüzden betik içindeki komutların (`mysqldump`, `zip`, `gpg` vb.) veya cron tanımlamasındaki betiğin **tam dosya yolunu (absolute path)** doğru yazdığımdan emin olurum.
-4. Crontab'a eklediğim satırın sonuna `>> /var/log/cron_hata.log 2>&1` ekleyerek `stdout` (çıktı) ve `stderr` (hata) loglarını spesifik bir dosyaya yazdırıp detaylı hatayı incelerim.
-
-**Soru 2:** "Betiğin yetkisiz kullanıcılar tarafından değiştirilmesini nasıl engellersin?"
-**Cevap:**
-1. Güvenlik için dosyanın sahipliğini (owner) `root` kullanıcısına veririm: `chown root:root betik.sh`.
-2. Dosya okuma, yazma ve çalıştırma izinlerini sadece root'a (veya yetkili kullanıcıya) kısıtlarım: `chmod 700 betik.sh`.
-3. Eğer dosyanın çok kritik olduğunu düşünüyor ve root dahi olsa kazara silinmesini veya değiştirilmesini önlemek istiyorsam, Linux dosya sistemi özelliklerinden faydalanarak **immutable (değiştirilemez)** bayrağını eklerim: `chattr +i betik.sh`. Değişiklik yapmak istediğimde önce `chattr -i` ile kaldırıp sonra düzenlemem gerekir.
