@@ -93,3 +93,8 @@ Bot çalıştığında Discord/Telegram kanalınıza şu şekilde bir mesaj dü�
 > ⚙️ **Servis Durumları:**
 > - **Nginx:** `active`
 > - **MySQL/MariaDB:** `active`
+
+<img width="856" height="558" alt="image" src="https://github.com/user-attachments/assets/7752bd24-cbb2-4024-b48e-25f22367245e" />
+<img width="832" height="783" alt="Screenshot_2" src="https://github.com/user-attachments/assets/62ec4ac5-67e6-4106-b415-49d32086e7a8" />
+<img width="832" height="575" alt="image" src="https://github.com/user-attachments/assets/9ef256fe-5033-4a28-86ff-9163aa3c0356" />
+
